@@ -35,7 +35,7 @@ function updateDandeSi() {
   dandeNo.remove();
   dandeNo = createSlider(1, floor(width / dandeSi.value()), 1, 1);
   dandeNo.input(updateDandeNo);
-  dandeNo.position(50, 100);
+  dandeNo.position(25, 100);
   updateDandeNo();
 }
 

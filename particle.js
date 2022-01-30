@@ -8,7 +8,7 @@ class DandelionParticle {
     this.vel = createVector(random(-0.5, 0.5), random(-0.5, 0.5));
     this.acc = createVector(random(0.001, 0.005), 0.001);
     this.life = 2048;
-    this.size = size;
+    this.size = (size * dandeSi.value()) / 4;
     this.type = type;
     this.theta = random(-45, 45);
   }
@@ -31,23 +31,17 @@ class DandelionParticle {
     push();
     translate(this.pos.x, this.pos.y);
     rotate((PI / 180) * this.theta);
-    image(
-      dandeImg[this.type],
-      0,
-      0,
-      (this.size * dandeSi.value()) / 4,
-      (this.size * dandeSi.value()) / 4
-    );
-    this.theta += (this.vel.x * this.vel.mag()) / 100;
+    image(dandeImg[this.type], 0, 0, this.size, this.size);
+    //this.theta += (this.vel.x * this.vel.mag()) / 100;
     pop();
   }
   isDead() {
     return (
       this.life < 0 ||
-      this.pos.x < -width / 4 ||
-      this.pos.x > width + width / 4 ||
-      this.pos.y < -width / 4 ||
-      this.pos.y > height + width / 4
+      this.pos.x < -this.size ||
+      this.pos.x > width + this.size ||
+      this.pos.y < -this.size ||
+      this.pos.y > height + this.size
     );
   }
 }

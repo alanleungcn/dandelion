@@ -30,10 +30,10 @@ function setup() {
   dandePs.input(updateDandePs);
   dandePs.position(25, 150);
 
-  windDeg = createSlider(0, 180);
+  windDeg = createSlider(0, 180, random(0, 180));
   windDeg.position(25, 200);
 
-  windVel = createSlider(10, 100);
+  windVel = createSlider(10, 100, random(10, 100));
   windVel.position(25, 250);
 
   regenBtn = createButton('Regenerate');
@@ -51,14 +51,6 @@ function setup() {
 }
 
 function draw() {
-  // control text
-  fill(0);
-  textSize(32);
-  text(`Dandelion size: ${round(dandeSi.value())}px`, 25, 50);
-  text(`Number of dandelion: ${dandeNo.value()}`, 25, 100);
-  text(`Dandelion per second: ${dandePs.value()}`, 25, 150);
-  text(`Wind degree: ${windDeg.value()}°`, 25, 200);
-  text(`Wind speed: ${windVel.value()}m/s`, 25, 250);
   // sky gradient
   let c1 = color('#2b9ef0'); // sky top
   let c2 = color('#90dae8'); // sky bottom
@@ -67,6 +59,14 @@ function draw() {
     stroke(lerpColor(c1, c2, n));
     line(0, y, width, y);
   }
+  // control text
+  fill(0);
+  textSize(32);
+  text(`Dandelion size: ${round(dandeSi.value())}px`, 25, 50);
+  text(`Number of dandelion: ${dandeNo.value()}`, 25, 100);
+  text(`Dandelion per second: ${dandePs.value()}`, 25, 150);
+  text(`Wind angle: ${windDeg.value()}°`, 25, 200);
+  text(`Wind speed: ${windVel.value()}`, 25, 250);
   // grass
   fill('#6fd253');
   beginShape();
