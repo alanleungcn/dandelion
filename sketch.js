@@ -22,7 +22,7 @@ function preload() {
 function setup() {
   // environment
   //frameRate(30);
-  console.log(pixelDensity());
+  pixelDensity(2);
   imageMode(CENTER);
   em = 2.5 * textSize();
   createCanvas(windowWidth, windowHeight);
