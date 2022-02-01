@@ -2,7 +2,15 @@ let system = []; // dandelion particle system
 let dandeX = []; // dandelion x value
 let dandeImg = []; // dandelion images
 let dandeInterval; // dandelion interval object
-let dandeNo, dandeSi, dandePs, windDeg, windVel, regenBtn, creditBtn, creditImg;
+let dandeNo,
+  dandeSi,
+  dandePs,
+  windDeg,
+  windVel,
+  regenBtn,
+  creditBtn,
+  creditImg,
+  em;
 
 function preload() {
   creditImg = loadImage('assets/credit.png');
@@ -14,37 +22,52 @@ function preload() {
 function setup() {
   // environment
   //frameRate(30);
-  pixelDensity(1.5);
+  console.log(pixelDensity());
   imageMode(CENTER);
+  em = 2.5 * textSize();
   createCanvas(windowWidth, windowHeight);
+  reset();
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  reset();
+}
+
+function reset() {
+  if (dandeSi) dandeSi.remove();
+  if (dandeNo) dandeNo.remove();
+  if (dandePs) dandePs.remove();
+  if (windDeg) windDeg.remove();
+  if (windVel) windVel.remove();
+  if (regenBtn) regenBtn.remove();
+  if (creditBtn) creditBtn.remove();
   // control
   dandeSi = createSlider(width / 8, width, min(width, height) / 4);
   dandeSi.input(updateDandeSi);
-  dandeSi.position(25, 50);
+  dandeSi.position(em, 2 * em);
 
   dandeNo = createSlider(1, floor(width / dandeSi.value()), 1, 1);
   dandeNo.input(updateDandeNo);
-  dandeNo.position(25, 100);
+  dandeNo.position(em, 4 * em);
 
-  dandePs = createSlider(1, 25, 2, 1);
+  dandePs = createSlider(1, 25, random(2, 8), 1);
   dandePs.input(updateDandePs);
-  dandePs.position(25, 150);
+  dandePs.position(em, 6 * em);
 
   windDeg = createSlider(0, 180, random(0, 180));
-  windDeg.position(25, 200);
+  windDeg.position(em, 8 * em);
 
-  windVel = createSlider(10, 100, random(10, 100));
-  windVel.position(25, 250);
+  windVel = createSlider(1, 100, random(1, 50));
+  windVel.position(em, 10 * em);
 
   regenBtn = createButton('Regenerate');
   regenBtn.mousePressed(regenerate);
-  regenBtn.style('font-size', `${min(width, height) / 25}px`);
-  regenBtn.position(25, 300);
+  regenBtn.position(em, 11.5 * em);
 
   creditBtn = createButton('Credit');
   creditBtn.mousePressed(credit);
-  creditBtn.style('font-size', `${min(width, height) / 25}px`);
-  creditBtn.position(25, 375);
+  creditBtn.position(em, 14.5 * em);
   // initial dandelion
   updateDandeNo(true);
   updateDandePs();
@@ -59,15 +82,7 @@ function draw() {
     stroke(lerpColor(c1, c2, n));
     line(0, y, width, y);
   }
-  // control text
-  fill(0);
-  textSize(32);
-  text(`Dandelion size: ${round(dandeSi.value())}px`, 25, 50);
-  text(`Number of dandelion: ${dandeNo.value()}`, 25, 100);
-  text(`Dandelion per second: ${dandePs.value()}`, 25, 150);
-  text(`Wind angle: ${windDeg.value()}°`, 25, 200);
-  text(`Wind speed: ${windVel.value()}`, 25, 250);
-  // grass
+  // ground
   fill('#6fd253');
   beginShape();
   let xoff = 0;
@@ -97,32 +112,13 @@ function draw() {
   for (let i = 0; i < system.length; i++) {
     system[i].run();
   }
-  // credit
-  // let creditSize = min(width, height) / 5;
-  // image(
-  //   creditImg,
-  //   25 + creditSize / 2,
-  //   height - creditSize / 2 - 25,
-  //   creditSize,
-  //   creditSize
-  // );
-}
-
-function addParticle() {
-  for (let i = 0; i < system.length; i++) {
-    system[i].addParticle();
-  }
-}
-
-function credit() {
-  window.open('/credit');
-}
-
-function regenerate() {
-  noiseSeed(random(100));
-  updateDandeNo();
-}
-
-function getNoiseY(x) {
-  return map(noise(x * 0.001), 0, 1, height / 2, height);
+  // control text
+  fill(0);
+  noStroke();
+  textSize(em);
+  text(`Dandelion size: ${round(dandeSi.value())}px`, em, 1.5 * em);
+  text(`Number of dandelion: ${dandeNo.value()}`, em, 3.5 * em);
+  text(`Dandelion per second: ${dandePs.value()}`, em, 5.5 * em);
+  text(`Wind angle: ${windDeg.value()}°`, em, 7.5 * em);
+  text(`Wind speed: ${windVel.value()}`, em, 9.5 * em);
 }

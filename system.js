@@ -8,7 +8,7 @@ class DandelionParticleSystem {
       new DandelionParticle(
         this.origin.x,
         this.origin.y,
-        random(0.5, 1),
+        random(0.75, 1),
         round(random(1, 2))
       )
     );

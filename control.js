@@ -35,12 +35,30 @@ function updateDandeSi() {
   dandeNo.remove();
   dandeNo = createSlider(1, floor(width / dandeSi.value()), 1, 1);
   dandeNo.input(updateDandeNo);
-  dandeNo.position(25, 100);
+  dandeNo.position(em, 4 * em);
   updateDandeNo();
 }
 
 function updateDandePs() {
-  console.log(1000 / dandePs.value());
   if (dandeInterval) clearInterval(dandeInterval);
   dandeInterval = setInterval(addParticle, 1000 / dandePs.value());
+}
+
+function addParticle() {
+  for (let i = 0; i < system.length; i++) {
+    system[i].addParticle();
+  }
+}
+
+function credit() {
+  window.open('/credit');
+}
+
+function regenerate() {
+  noiseSeed(Date.now());
+  updateDandeNo();
+}
+
+function getNoiseY(x) {
+  return map(noise(x * 0.001), 0, 1, height / 2, height);
 }
