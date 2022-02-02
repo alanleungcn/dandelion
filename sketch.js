@@ -1,19 +1,24 @@
-let system = []; // dandelion particle system
+let system = []; // dandelion system
 let dandeX = []; // dandelion x value
 let dandeImg = []; // dandelion images
 let dandeInterval; // dandelion interval object
-let dandeNo,
+let showControl = true,
+  controlBtn,
+  dandeNo,
   dandeSi,
   dandePs,
   windDeg,
   windVel,
   regenBtn,
   creditBtn,
-  creditImg,
   em;
 
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  reset();
+}
+
 function preload() {
-  creditImg = loadImage('assets/credit.png');
   dandeImg[0] = loadImage('assets/dandelion.png'); // big dandelion
   dandeImg[1] = loadImage('assets/dandelion-1.png'); // flying dandelion
   dandeImg[2] = loadImage('assets/dandelion-2.png'); // flying dandelion with face
@@ -21,16 +26,10 @@ function preload() {
 
 function setup() {
   // environment
-  //frameRate(30);
   pixelDensity(2);
   imageMode(CENTER);
   em = 2.5 * textSize();
   createCanvas(windowWidth, windowHeight);
-  reset();
-}
-
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
   reset();
 }
 
@@ -42,23 +41,31 @@ function reset() {
   if (windVel) windVel.remove();
   if (regenBtn) regenBtn.remove();
   if (creditBtn) creditBtn.remove();
+  if (controlBtn) controlBtn.remove();
   // control
-  dandeSi = createSlider(width / 8, width, min(width, height) / 4);
+  controlBtn = createButton('Toggle control');
+  controlBtn.mousePressed(toggleControl);
+  controlBtn.position(
+    width - controlBtn.size().width - em,
+    height - controlBtn.size().height - em
+  );
+
+  dandeSi = createSlider(width / 8, (width / 3) * 2, min(width, height) / 4);
   dandeSi.input(updateDandeSi);
   dandeSi.position(em, 2 * em);
 
-  dandeNo = createSlider(1, floor(width / dandeSi.value()), 1, 1);
+  dandeNo = createSlider(1, floor(((width / dandeSi.value()) * 3) / 2), 1, 1);
   dandeNo.input(updateDandeNo);
   dandeNo.position(em, 4 * em);
 
-  dandePs = createSlider(1, 25, random(2, 8), 1);
+  dandePs = createSlider(1, 50, random(2, 10), 1);
   dandePs.input(updateDandePs);
   dandePs.position(em, 6 * em);
 
   windDeg = createSlider(0, 180, random(0, 180));
   windDeg.position(em, 8 * em);
 
-  windVel = createSlider(1, 100, random(1, 50));
+  windVel = createSlider(1, 100, random(5, 25));
   windVel.position(em, 10 * em);
 
   regenBtn = createButton('Regenerate');
@@ -68,15 +75,17 @@ function reset() {
   creditBtn = createButton('Credit');
   creditBtn.mousePressed(credit);
   creditBtn.position(em, 14.5 * em);
+
+  toggleControl();
   // initial dandelion
-  updateDandeNo(true);
+  updateDandeNo();
   updateDandePs();
 }
 
 function draw() {
   // sky gradient
-  let c1 = color('#2b9ef0'); // sky top
-  let c2 = color('#90dae8'); // sky bottom
+  let c1 = color('#2b9ef0'); // top
+  let c2 = color('#90dae8'); // bottom
   for (let y = 0; y < height; y++) {
     n = map(y, 0, height, 0, 1);
     stroke(lerpColor(c1, c2, n));
@@ -89,7 +98,7 @@ function draw() {
   let y;
   for (let x = 0; x < width; x++) {
     stroke('#6fd253');
-    y = map(noise(xoff), 0, 1, height / 2, height);
+    y = map(noise(xoff), 0, 1, height / 2, height - 3 * em);
     vertex(x, y);
     xoff += 0.001;
   }
@@ -113,6 +122,7 @@ function draw() {
     system[i].run();
   }
   // control text
+  if (!showControl) return;
   fill(0);
   noStroke();
   textSize(em);
