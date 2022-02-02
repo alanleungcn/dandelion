@@ -68,7 +68,7 @@ function regenerate() {
 }
 
 function credit() {
-  window.open('/credit');
+  window.open('credit');
 }
 
 function addDandelion() {
