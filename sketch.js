@@ -50,7 +50,7 @@ function reset() {
     height - controlBtn.size().height - em
   );
 
-  dandeSi = createSlider(width / 8, (width / 3) * 2, min(width, height) / 4);
+  dandeSi = createSlider(width / 8, width / 2, min(width, height) / 4, 0.1);
   dandeSi.input(updateDandeSi);
   dandeSi.position(em, 2 * em);
 
