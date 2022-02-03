@@ -58,7 +58,7 @@ function reset() {
   dandeNo.input(updateDandeNo);
   dandeNo.position(em, 4 * em);
 
-  dandePs = createSlider(1, 50, random(2, 10), 1);
+  dandePs = createSlider(1, 50, random(2, 8), 1);
   dandePs.input(updateDandePs);
   dandePs.position(em, 6 * em);
 

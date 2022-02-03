@@ -5,7 +5,8 @@ class Dandelion {
       random(x - offset, x + offset),
       random(y - offset, y + offset)
     );
-    this.vel = createVector(random(-1, 1), random(-1, 1));
+    this.vel = createVector(random(-0.5, 0.5), random(-0.5, 0.5));
+    this.acc = createVector(0, 0);
     this.size = (random(0.75, 1) * dandeSi.value()) / 4;
     this.type = round(random(1, 2));
     this.theta = random(-45, 45);
@@ -16,13 +17,15 @@ class Dandelion {
     this.display();
   }
   update() {
-    this.pos.add(this.vel);
-    this.pos.add(
+    this.acc.add(
       p5.Vector.fromAngle(
         -radians(windDeg.value()),
-        map(windVel.value(), 1, 100, 1.5, 10)
+        map(windVel.value(), 1, 100, 0.01, 0.1)
       )
     );
+    this.vel.add(this.acc);
+    this.pos.add(this.vel);
+    this.acc.mult(0);
     this.lifespan -= 2;
   }
   display() {
